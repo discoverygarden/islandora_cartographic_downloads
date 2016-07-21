@@ -51,13 +51,23 @@ function islandora_cartographic_downloads_menu() {
  *   TRUE if permission is granted, FALSE otherwise.
  */
 function islandora_cartographic_downloads_access($op, AbstractObject $islandora_object, $ds_type) {
-  // @todo Only allow access to datastreams on objects of type 'cartographic'.
+  // Only allow access to datastreams on objects of type 'cartographic'.
+  if (isset($islandora_object['MODS'])) {
+    // Load MODS XML and get the first result for the typeOfResource element.
+    $mods = new DOMDocument();
+    $mods->loadXML($islandora_object['MODS']->content);
+    $type_of_resource = $mods->getElementsByTagName('typeOfResource')->item(0)->nodeValue;
+    if ($type_of_resource != "cartographic") {
+      return FALSE;
+    }
+  }
 
   // See if the datastream we are looking for exists.
   if (!isset($islandora_object[$ds_type])) {
     return FALSE;
   }
 
+  // Finally see if the user has access to the datastream.
   return islandora_datastream_access($op, $islandora_object[$ds_type]);
 }
 

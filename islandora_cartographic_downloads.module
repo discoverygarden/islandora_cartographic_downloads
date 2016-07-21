@@ -1,0 +1,74 @@
+<?php
+/**
+ * @file
+ * An Islandora module for downloading ZIP and OBJ datastreams on cartographic objects.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function islandora_cartographic_downloads_menu() {
+  $items = array();
+
+  $items['islandora/object/%islandora_object/zip_download'] = array(
+    'title' => 'Download ZIP',
+    'access callback' => 'islandora_cartographic_downloads_access',
+    'access arguments' => array(ISLANDORA_VIEW_OBJECTS, 2, 'ZIP'),
+    'page callback' => 'islandora_cartographic_downloads_download',
+    'page arguments' => array(2, 'ZIP'),
+    'file' => 'includes/downloads.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  $items['islandora/object/%islandora_object/obj_download'] = array(
+    'title' => 'Download Original',
+    'access callback' => 'islandora_cartographic_downloads_access',
+    'access arguments' => array(ISLANDORA_VIEW_OBJECTS, 2, 'OBJ'),
+    'page callback' => 'islandora_cartographic_downloads_download',
+    'page arguments' => array(2, 'OBJ'),
+    'file' => 'includes/downloads.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+}
+
+/**
+ * Islandora Cartographic Download tab access callback.
+ *
+ * @param string $op
+ *   String identifying an operation to check.
+ * @param AbstractObject $islandora_object
+ *   Instance of an islandora object.
+ * @param string $ds_type
+ *   String identifying the type of datastream we are looking for.
+ *
+ * @return bool
+ *   TRUE if permission is granted, FALSE otherwise.
+ */
+function islandora_cartographic_downloads_access($op, AbstractObject $islandora_object, $ds_type) {
+  // @todo only allow access to datastreams on objects of type 'cartographic'
+
+  // see if the datastream we are looking for exists
+  if (!isset($islandora_object[$ds_type])) {
+    return FALSE;
+  }
+
+  return islandora_datastream_access($op, $islandora_object[$ds_type]);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function islandora_cartographic_downloads_theme() {
+  return array(
+    'islandora_cartographic_downloads' => array(
+      'template' => 'theme/islandora-cartographic-downloads',
+      'variables' => array(
+        'islandora_object' => NULL,
+        'message' => NULL,
+      ),
+      'file' => 'theme/theme.inc',
+    ),
+  );
+}

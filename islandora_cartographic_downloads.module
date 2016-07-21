@@ -37,6 +37,9 @@ function islandora_cartographic_downloads_menu() {
 /**
  * Islandora Cartographic Download tab access callback.
  *
+ * Check that we are looking at an object with typeOfResource='cartographic',
+ * and that the specified datastream exists.
+ *
  * @param string $op
  *   String identifying an operation to check.
  * @param AbstractObject $islandora_object

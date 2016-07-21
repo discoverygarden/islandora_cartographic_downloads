@@ -12,7 +12,7 @@
  * @param string $ds_type
  *   Type of datastream to be downloaded.
  *
- * @return
+ * @return string
  *   An HTML string representing the themed output.
  */
 function islandora_cartographic_downloads_download(AbstractObject $islandora_object, $ds_type) {

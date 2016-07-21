@@ -1,5 +1,5 @@
 name = "Islandora Cartographic Downloads"
-description = "This module provides download tabs for ZIP and OBJ datastreams, on cartographic type objects"
+description = "This module provides cartographic objects with download tabs for ZIP and OBJ datastreams"
 package = Islandora Tools
 dependencies[] = islandora
 version = 7.x-dev

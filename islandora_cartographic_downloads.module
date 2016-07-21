@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- * An Islandora module for downloading ZIP and OBJ datastreams on cartographic objects.
+ * An Islandora module for downloading ZIP and OBJ datastreams on cartographic
+ * objects.
  */
 
 /**
@@ -47,9 +48,9 @@ function islandora_cartographic_downloads_menu() {
  *   TRUE if permission is granted, FALSE otherwise.
  */
 function islandora_cartographic_downloads_access($op, AbstractObject $islandora_object, $ds_type) {
-  // @todo only allow access to datastreams on objects of type 'cartographic'
+  // @todo Only allow access to datastreams on objects of type 'cartographic'.
 
-  // see if the datastream we are looking for exists
+  // See if the datastream we are looking for exists.
   if (!isset($islandora_object[$ds_type])) {
     return FALSE;
   }

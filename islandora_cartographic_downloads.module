@@ -74,12 +74,12 @@ function islandora_cartographic_downloads_access($op, AbstractObject $islandora_
 function islandora_cartographic_downloads_theme() {
   return array(
     'islandora_cartographic_downloads' => array(
+      'file' => 'theme/theme.inc',
       'template' => 'theme/islandora-cartographic-downloads',
       'variables' => array(
         'islandora_object' => NULL,
         'message' => NULL,
       ),
-      'file' => 'theme/theme.inc',
     ),
   );
 }

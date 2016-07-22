@@ -1,13 +1,23 @@
 <?php
 /**
  * @file
- * An Islandora module for downloading specified datastreams on objects.
+ * Theme and preprocess functions.
  */
 
 /**
- * Implements hook_preprocess_theme().
+ * Implements template_preprocess().
+ *
+ * Prepares variables for islandora_cartographic_downloads template.
+ *
+ * Default template: islandora-cartographic-downloads.tpl.php.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - islandora_object: Instance of an islandora object.
+ *   - message: A message displayed on the page.
+ *   - ds_type: The type of datastream to be downloaded.
  */
-function islandora_cartographic_downloads_preprocess_islandora_cartographic_downloads(&$variables) {
+function template_preprocess_islandora_cartographic_downloads(&$variables) {
   drupal_add_js(
     array(
       'islandora_cartographic_downloads' => array(

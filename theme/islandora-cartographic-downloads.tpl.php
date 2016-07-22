@@ -1,6 +1,6 @@
 <?php
 /**
- .* @file
+ * @file
  * Template for creating the download Datastream link.
  *
  * Available variables:

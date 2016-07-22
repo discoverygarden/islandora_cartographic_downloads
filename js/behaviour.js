@@ -5,7 +5,7 @@
 
 
 (function ($) {
-  Drupal.behaviors.zip_download = {
+  Drupal.behaviors.download_tab = {
     attach: function (context, settings) {
       window.onload = function() {
         // Kick off the download of this datastream.

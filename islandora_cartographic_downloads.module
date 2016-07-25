@@ -1,0 +1,85 @@
+<?php
+/**
+ * @file
+ * An Islandora module for downloading ZIP and OBJ datastreams on cartographic
+ * objects.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function islandora_cartographic_downloads_menu() {
+  $items = array();
+
+  $items['islandora/object/%islandora_object/zip_download'] = array(
+    'title' => 'Download ZIP',
+    'access callback' => 'islandora_cartographic_downloads_access',
+    'access arguments' => array(ISLANDORA_VIEW_OBJECTS, 2, 'ZIP'),
+    'page callback' => 'islandora_cartographic_downloads_download',
+    'page arguments' => array(2, 'ZIP'),
+    'file' => 'includes/downloads.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  $items['islandora/object/%islandora_object/obj_download'] = array(
+    'title' => 'Download Original',
+    'access callback' => 'islandora_cartographic_downloads_access',
+    'access arguments' => array(ISLANDORA_VIEW_OBJECTS, 2, 'OBJ'),
+    'page callback' => 'islandora_cartographic_downloads_download',
+    'page arguments' => array(2, 'OBJ'),
+    'file' => 'includes/downloads.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+}
+
+/**
+ * Islandora Cartographic Download tab access callback.
+ *
+ * Check that we are looking at an object with typeOfResource='cartographic',
+ * and that the specified datastream exists.
+ *
+ * @param string $op
+ *   String identifying an operation to check.
+ * @param AbstractObject $islandora_object
+ *   Instance of an islandora object.
+ * @param string $ds_type
+ *   String identifying the type of datastream we are looking for.
+ *
+ * @return bool
+ *   TRUE if permission is granted, FALSE otherwise.
+ */
+function islandora_cartographic_downloads_access($op, AbstractObject $islandora_object, $ds_type) {
+  // Fail if the datastream we are looking for doesn't exist,
+  // or we can't check for the typeOfResource, or we don't have permission.
+  if (!isset($islandora_object[$ds_type]) ||
+      !isset($islandora_object['MODS']) ||
+      !islandora_datastream_access($op, $islandora_object[$ds_type])) {
+    return FALSE;
+  }
+
+  // Check to see if this is a cartographic object.
+  $mods = new DOMDocument();
+  $mods->loadXML($islandora_object['MODS']->content);
+  $xpath = new DOMXPath($mods);
+  $xpath->registerNamespace('mods', 'http://www.loc.gov/mods/v3');
+  $cartographic = $xpath->evaluate('boolean(/mods:mods/mods:typeOfResource[text() = "cartographic"])');
+  return $cartographic;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function islandora_cartographic_downloads_theme() {
+  return array(
+    'islandora_cartographic_downloads' => array(
+      'file' => 'theme/theme.inc',
+      'template' => 'theme/islandora-cartographic-downloads',
+      'variables' => array(
+        'islandora_object' => NULL,
+        'message' => NULL,
+      ),
+    ),
+  );
+}
